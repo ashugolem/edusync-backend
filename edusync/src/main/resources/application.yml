@@ -38,19 +38,19 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
 
-    # These 3 lines read from your .env file
+    # These 3 lines are being read from .env file
     url: ${AIVEN_DB_URL}
     username: ${AIVEN_DB_USER}
     password: ${AIVEN_DB_PASS}
 
-    # We will keep the timeout fix. It's good practice for any cloud DB.
+    # We will keep the timeout fix
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
-      connection-timeout: 30000 # Wait 30 seconds
+      connection-timeout: 30000
 
   # --- Logging (for Dev) ---
   logging:
     level:
       root: INFO
-      com.project.edusync: DEBUG # Use your project's package name
+      com.project.edusync: DEBUG
       org.hibernate.SQL: DEBUG
