@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,4 +38,27 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "FROM Room r " +
             "WHERE r.name = :name AND r.isActive = true")
     boolean existsByName(String name);
+
+    /**
+     * Finds available rooms of a specific type for a given timeslot.
+     */
+    @Query("SELECT r FROM Room r " +
+            "WHERE r.isActive = true " +
+            "AND r.roomType = :roomType " +
+            "AND r.uuid NOT IN (" +
+            "  SELECT s.room.uuid FROM Schedule s " +
+            "  WHERE s.timeslot.uuid = :timeslotId AND s.isActive = true" +
+            ")")
+    List<Room> findAvailableRoomsByType(UUID timeslotId, String roomType);
+
+    /**
+     * Finds all available rooms for a given timeslot.
+     */
+    @Query("SELECT r FROM Room r " +
+            "WHERE r.isActive = true " +
+            "AND r.uuid NOT IN (" +
+            "  SELECT s.room.uuid FROM Schedule s " +
+            "  WHERE s.timeslot.uuid = :timeslotId AND s.isActive = true" +
+            ")")
+    List<Room> findAvailableRooms(UUID timeslotId);
 }
