@@ -50,8 +50,26 @@ public class AcademicClassServiceImpl implements AcademicClassService {
     public AcademicClassResponseDto getClassById(UUID classId) {
         log.info("Fetching academic class with id: {}", classId);
         AcademicClass academicClass = academicClassRepository.findById(classId)
-                .orElseThrow(() -> new RuntimeException("No resource found"));
+                .orElseThrow(() ->{
+                    log.warn("No class with id {} found",classId);
+                    return new RuntimeException("No resource found");});
         return toClassResponseDto(academicClass); // Use private helper
+    }
+
+    @Override
+    public AcademicClassResponseDto updateClass(UUID classId, AcademicClassRequestDto academicClassRequestDto){
+        log.info("Attempting to update class with id: {}", classId);
+        AcademicClass existingClass = academicClassRepository.findById(classId)
+                        .orElseThrow(() -> {
+                            log.warn("No class with id {} to update",classId);
+                            return new RuntimeException("No resource found to update");
+                        });
+        existingClass.setName(academicClassRequestDto.getName());
+
+        AcademicClass updatedClass = academicClassRepository.save(existingClass);
+        log.info("Class with id {} updated successfully", updatedClass.getId());
+
+        return toClassResponseDto(updatedClass); // Use private helper
     }
 
     private AcademicClassResponseDto toClassResponseDto(AcademicClass entity) {

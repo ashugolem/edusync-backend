@@ -57,8 +57,14 @@ public class AcademicClassController {
     }
 
     @GetMapping("/classes/{classId}")
-    public ResponseEntity<AcademicClassResponseDto> getClassById(@Valid @PathVariable UUID classId){
+    public ResponseEntity<AcademicClassResponseDto> getClassById(@PathVariable UUID classId){
         AcademicClassResponseDto response = academicClassService.getClassById(classId);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @PutMapping("/classes/{classId}")
+    public ResponseEntity<AcademicClassResponseDto> updateClassById(@PathVariable UUID classId,@Valid @RequestBody AcademicClassRequestDto academicClassRequestDto){
+        AcademicClassResponseDto response = academicClassService.updateClass(classId,academicClassRequestDto);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }
