@@ -26,4 +26,6 @@ public interface AcademicClassService {
     SectionResponseDto addSectionToClass(UUID classId, SectionRequestDto sectionRequestDto);
 
     Set<SectionResponseDto> getAllSectionsForClass(UUID classId);
+
+    SectionResponseDto getSectionById(UUID sectionId);
 }

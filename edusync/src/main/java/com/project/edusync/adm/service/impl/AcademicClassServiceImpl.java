@@ -120,6 +120,17 @@ public class AcademicClassServiceImpl implements AcademicClassService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public SectionResponseDto getSectionById(UUID sectionId) {
+        log.info("Fetching section with id: {}", sectionId);
+        Section section = sectionRepository.findById(sectionId)
+                .orElseThrow(() -> {
+                    log.warn("Section with id {} not found",sectionId);
+                    return new RuntimeException("no such section found");
+                });
+        return toSectionResponseDto(section); // Use private helper
+    }
+
     private AcademicClassResponseDto toClassResponseDto(AcademicClass entity) {
         if (entity == null) return null;
         return AcademicClassResponseDto.builder()

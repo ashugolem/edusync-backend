@@ -90,4 +90,12 @@ public class AcademicClassController {
         Set<SectionResponseDto> sections = academicClassService.getAllSectionsForClass(classId);
         return ResponseEntity.ok(sections);
     }
+
+    @GetMapping("/sections/{sectionId}")
+    public ResponseEntity<SectionResponseDto> getSectionById(
+            @PathVariable UUID sectionId) {
+
+        SectionResponseDto section = academicClassService.getSectionById(sectionId);
+        return ResponseEntity.ok(section);
+    }
 }
